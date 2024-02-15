@@ -37,9 +37,8 @@ export const appTheme: { dark: ITheme; light: ITheme } = {
 export const GlobalStyles = createGlobalStyle`
   body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
+    background: black;
+    font-family: "Inter", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -49,5 +48,19 @@ export const GlobalStyles = createGlobalStyle`
       max-width: 768px;
       margin: 0 auto;
     }
+  }
+
+  h1 {
+    font-size: 43px;
+    font-weight: 700;
+    line-height: 30px;
+    letter-spacing: -2px;
+  }
+
+  p {
+    margin: 1px;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 22px;
   }
 `;
