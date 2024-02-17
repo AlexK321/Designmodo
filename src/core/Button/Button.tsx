@@ -4,6 +4,7 @@ import { device } from '../../constants';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'small' | 'medium';
+  fullwidth?: string;
 }
 
 export const Button: React.FC<ButtonProps> = styled.button`
@@ -13,7 +14,7 @@ export const Button: React.FC<ButtonProps> = styled.button`
   border-radius: 6px;
   font-size: ${props => (props.variant === 'small' ? '14px' : '16px')};
   padding: ${props => (props.variant === 'small' ? '10px 19px' : '14px 46px')};
-  width: fit-content;
+  width: ${props => (props.fullwidth === 'true' ? '90%' : 'fit-content')};
   height: fit-content;
   position: relative;
 

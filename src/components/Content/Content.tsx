@@ -3,9 +3,26 @@ import { useContext, useEffect } from 'react';
 import { Context } from '../../App';
 import { PREVIEW_ID_PREFIX } from '../../constants';
 
-import { ContentWrapper, Description, Image, TestButton } from './Content.styles';
+import { ContentWrapper, Description, DescriptionBlock, Image, TestButton, TypographyH1 } from './Content.styles';
 
 type Option = 'top' | 'left' | 'opacity' | 'transform' | 'filter';
+
+export const getDefaultValue = (key: string) => {
+  switch (key) {
+    case 'bottom':
+      return '0px';
+    case 'left':
+      return '0px';
+    case 'opacity':
+      return '1';
+    case 'transform':
+      return 'scale(1)';
+    case 'filter':
+      return 'blur(0px)';
+    default:
+      return '0';
+  }
+};
 
 export const Content = () => {
   const [animationOptions, setAnimationOptions] = useContext<any>(Context);
@@ -34,26 +51,37 @@ export const Content = () => {
     };
 
     if (element) {
-      const currentOptions = animationOptions.options[animationOptions.currentElementId] || {};
-      Object.entries(currentOptions).forEach(([key, value]) => {
-        element.style[key as Option] = getValue(key, (value || 0) as number);
-      });
+      const currentOptions = animationOptions.options?.[animationOptions.currentElementId] || {};
+      Object.entries(currentOptions)
+        .filter(item => item[0] !== 'repeat' && item[0] !== 'duration' && item[0] !== 'delay' && item[0] !== 'speed')
+        .forEach(([key, value]) => {
+          element.style[key as Option] = getValue(key, (value || 0) as number);
+        });
     }
-  }, [Object.values(animationOptions.options)]);
+  }, [Object.values(animationOptions.options || {})]);
 
   const handleClick = (e: any) => {
-    const element = document.getElementById(e.target.id);
+    const id = e.target.id.replace(PREVIEW_ID_PREFIX, '');
+    const element = document.getElementById(id);
 
     if (element) {
       const elementStyles = window.getComputedStyle(element);
-      let secondElement = document.getElementById(`${PREVIEW_ID_PREFIX}${e.target.id}`);
+      let secondElement = document.getElementById(`${PREVIEW_ID_PREFIX}${id}`);
 
-      if (animationOptions.currentElementId === e.target.id && secondElement) {
+      if (animationOptions.currentElementId === id && secondElement) {
         if (secondElement.parentNode) secondElement.parentNode.insertBefore(element, secondElement);
         element.style.position = 'relative';
+
+        const currentOptions = animationOptions.options?.[animationOptions.currentElementId] || {};
+        Object.entries(currentOptions)
+          .filter(item => item[0] !== 'repeat' && item[0] !== 'duration' && item[0] !== 'delay' && item[0] !== 'speed')
+          .forEach(([key, value]) => {
+            element.style[key as Option] = getDefaultValue(key);
+          });
+
         secondElement.remove();
         setAnimationOptions((prev: any) => ({ ...prev, currentElementId: null }));
-      } else if (!e.target.id.includes(PREVIEW_ID_PREFIX)) {
+      } else if (!id.includes(PREVIEW_ID_PREFIX)) {
         secondElement = document.createElement('div');
         secondElement.id = `${PREVIEW_ID_PREFIX}${e.target.id}`;
         secondElement.style.width = `${element?.offsetWidth}px`;
@@ -74,18 +102,20 @@ export const Content = () => {
 
   return (
     <ContentWrapper onClick={handleClick}>
-      <Description>
-        <h1 id="title" style={{ position: 'relative' }}>
+      <DescriptionBlock>
+        <TypographyH1 id="title" style={{ position: 'relative' }}>
           Animation Settings
-        </h1>
-        <p id="description" style={{ position: 'relative' }}>
-          The user should have the option to select any element on the page and set up its animation using the controls
-          in the right panel. A dotted line will show the elements position and state before the animation begins,
-          giving the user a clear idea of how the animation will appear. The preview button on the top panel will open
-          the result in a new tab.
-        </p>
+        </TypographyH1>
+        <Description>
+          <div id="description" style={{ position: 'relative' }}>
+            The user should have the option to select any element on the page and set up its animation using the
+            controls in the right panel. A dotted line will show the elements position and state before the animation
+            begins, giving the user a clear idea of how the animation will appear. The preview button on the top panel
+            will open the result in a new tab.
+          </div>
+        </Description>
         <TestButton id="testButton">Button</TestButton>
-      </Description>
+      </DescriptionBlock>
       <div style={{ position: 'relative' }} id="image">
         <Image
           src="https://png.pngtree.com/background/20230611/original/pngtree-picture-of-a-blue-bird-on-a-black-background-picture-image_3124189.jpg"

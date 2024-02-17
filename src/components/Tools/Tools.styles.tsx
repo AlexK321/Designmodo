@@ -15,3 +15,9 @@ export const ButtonContainer = styled.div`
   align-items: center;
   margin-top: 10px;
 `;
+
+export const SavingContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
