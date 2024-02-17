@@ -16,14 +16,7 @@ export const Slider = ({ label, name, defaultValue, onChange, ...props }: any) =
         {label}
       </Typography>
       <SliderWrapper>
-        <IOSSlider
-          aria-label="ios slider"
-          defaultValue={defaultValue}
-          valueLabelDisplay="on"
-          onChange={onChange}
-          name={name}
-          {...props}
-        />
+        <IOSSlider defaultValue={defaultValue} valueLabelDisplay="on" onChange={onChange} name={name} {...props} />
       </SliderWrapper>
     </Box>
   );

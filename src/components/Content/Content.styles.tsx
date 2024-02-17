@@ -10,6 +10,7 @@ export const ContentWrapper = styled.div`
   display: flex;
   gap: 30px;
   padding: 74px;
+  position: relative;
 `;
 
 export const Description = styled.div`

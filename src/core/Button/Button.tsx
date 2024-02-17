@@ -15,4 +15,9 @@ export const Button: React.FC<ButtonProps> = styled.button`
   padding: ${props => (props.variant === 'small' ? '10px 19px' : '14px 46px')};
   width: fit-content;
   height: fit-content;
+  position: relative;
+
+  &:hover {
+    background: #0d53bf;
+  }
 `;

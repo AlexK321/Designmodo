@@ -9,3 +9,5 @@ export const device = {
   tablet: `(max-width: ${maxSize.tablet}px)`,
   desktop: `(max-width: ${maxSize.desktop}px)`,
 };
+
+export const PREVIEW_ID_PREFIX = 'preview-';
