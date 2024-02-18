@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { device } from '../../constants';
-
 export const MainWrapper = styled.div`
   width: 100%;
   height: 100%;

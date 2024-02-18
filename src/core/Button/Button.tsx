@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { device } from '../../constants';
-
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'small' | 'medium';
   fullwidth?: string;

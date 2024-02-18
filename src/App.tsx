@@ -1,21 +1,13 @@
 import React, { useState } from 'react';
 
 import { AppRoutes } from './pages';
+import { IAnimationOptions } from './pages/types/interfaces';
 import { GlobalStyles } from './theme';
 
-interface IAnimationOptions {
-  currentElementId: string | null;
-  options: {
-    bottom: number;
-    left: number;
-    opacity: number;
-  };
-}
-
-export const Context = React.createContext([{}, () => {}]);
+export const Context = React.createContext<[IAnimationOptions, any]>([{} as IAnimationOptions, () => {}]);
 
 const App = () => {
-  const [animationOptions, setAnimationOptions] = useState<any>({
+  const [animationOptions, setAnimationOptions] = useState<IAnimationOptions>({
     currentElementId: null,
     options: {},
   });

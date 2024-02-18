@@ -2,8 +2,9 @@ import { useContext } from 'react';
 import gsap from 'gsap';
 
 import { Context } from '../App';
-import { getDefaultValue } from '../components/Content';
 import { PREVIEW_ID_PREFIX } from '../constants';
+
+import { getDefaultValue } from './getValues';
 
 type TOption = 'top' | 'left' | 'opacity' | 'transform' | 'filter';
 

@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
-import { Checkbox, FormControlLabel, MenuItem, Radio, RadioGroup, Select, Switch } from '@mui/material';
+import { MenuItem, Select } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
 import { Box, IOSSlider, SliderWrapper } from './Option.styles';

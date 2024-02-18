@@ -1,51 +1,29 @@
 import { useContext, useEffect } from 'react';
-import { Box, Switch, Typography } from '@mui/material';
 
 import { Context } from '../../App';
 import { Button } from '../../core/Button/Button';
 import { Option } from '../../core/Option/Option';
+import { IAnimationOptions } from '../../pages/types/interfaces';
 import { useStartAnimation } from '../../utils/startAnimation';
 
 import { DEFAULT_SLIDER_OPTIONS } from './Tools.constants';
 
-import { SliderWrapper } from '../../core/Option/Option.styles';
 import { ButtonContainer, ToolsWrapper } from './Tools.styles';
 
 export const Tools = () => {
   const [animationOptions, setAnimationOptions] = useContext<any>(Context);
   const { startAnimation } = useStartAnimation();
-  useEffect(() => {
-    setAnimationOptions(
-      JSON.parse(localStorage.getItem('animationOptions') || '{"currentElementId": null, "options": {}}'),
-    );
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('animationOptions', JSON.stringify({ ...animationOptions, currentElementId: null }));
-  }, [Object.values(animationOptions.options)]);
 
   const currentOptions = animationOptions.options?.[animationOptions.currentElementId] || {};
-
   let preparingOptions = DEFAULT_SLIDER_OPTIONS;
 
-  useEffect(() => {
-    preparingOptions = DEFAULT_SLIDER_OPTIONS.map(item => ({
-      ...item,
-      value: currentOptions[item.name] || item.defaultValue,
-    }));
-    console.log(currentOptions, preparingOptions);
-  }, [animationOptions.currentElementId]);
-
-  console.log(currentOptions);
-
   const handleChange = (e: any) => {
-    console.log(e.target.name, e.target.value);
-    setAnimationOptions((prev: any) => ({
+    setAnimationOptions((prev: IAnimationOptions) => ({
       ...prev,
       options: {
         ...prev.options,
-        [prev.currentElementId]: {
-          ...prev.options[prev.currentElementId],
+        [prev.currentElementId as string]: {
+          ...prev.options[prev.currentElementId as string],
           [e.target.name]: e.target.value,
         },
       },
@@ -57,6 +35,23 @@ export const Tools = () => {
     setAnimationOptions({ currentElementId: null, options: {} });
     window.location.reload();
   };
+
+  useEffect(() => {
+    setAnimationOptions(
+      JSON.parse(localStorage.getItem('animationOptions') || '{"currentElementId": null, "options": {}}'),
+    );
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('animationOptions', JSON.stringify({ ...animationOptions, currentElementId: null }));
+  }, [Object.values(animationOptions.options)]);
+
+  useEffect(() => {
+    preparingOptions = DEFAULT_SLIDER_OPTIONS.map(item => ({
+      ...item,
+      value: currentOptions[item.name] || item.defaultValue,
+    }));
+  }, [animationOptions.currentElementId]);
 
   return (
     <ToolsWrapper>

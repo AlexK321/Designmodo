@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { device } from '../../constants';
-
 export const LayoutBox = styled.div`
   width: 1234px;
   max-width: 1234px;
@@ -10,10 +8,6 @@ export const LayoutBox = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-
-  @media ${device.tablet} {
-    overflow-x: auto;
-  }
 `;
 
 export const Header = styled.div`

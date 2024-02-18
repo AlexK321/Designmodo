@@ -2,63 +2,15 @@ import { useContext, useEffect } from 'react';
 
 import { Context } from '../../App';
 import { PREVIEW_ID_PREFIX } from '../../constants';
+import { IAnimationOptions } from '../../pages/types/interfaces';
+import { getDefaultValue, getValue } from '../../utils/getValues';
 
 import { ContentWrapper, Description, DescriptionBlock, Image, TestButton, TypographyH1 } from './Content.styles';
 
 type Option = 'top' | 'left' | 'opacity' | 'transform' | 'filter';
 
-export const getDefaultValue = (key: string) => {
-  switch (key) {
-    case 'bottom':
-      return '0px';
-    case 'left':
-      return '0px';
-    case 'opacity':
-      return '1';
-    case 'transform':
-      return 'scale(1)';
-    case 'filter':
-      return 'blur(0px)';
-    default:
-      return '0';
-  }
-};
-
 export const Content = () => {
   const [animationOptions, setAnimationOptions] = useContext<any>(Context);
-  useEffect(() => {
-    const element = document.getElementById(animationOptions.currentElementId);
-
-    const getValue = (key: string, value: number) => {
-      switch (key) {
-        case 'bottom':
-          return `${value}px`;
-        case 'left':
-          return `${value}px`;
-        case 'opacity':
-          return `${value}%`;
-        case 'transform':
-          return `scale(${value})`;
-        case 'filter':
-          return `blur(${value}px)`;
-        case 'speed':
-          return String(value);
-        case 'delay':
-          return String(value);
-        default:
-          return `${value}px`;
-      }
-    };
-
-    if (element) {
-      const currentOptions = animationOptions.options?.[animationOptions.currentElementId] || {};
-      Object.entries(currentOptions)
-        .filter(item => item[0] !== 'repeat' && item[0] !== 'duration' && item[0] !== 'delay' && item[0] !== 'speed')
-        .forEach(([key, value]) => {
-          element.style[key as Option] = getValue(key, (value || 0) as number);
-        });
-    }
-  }, [Object.values(animationOptions.options || {})]);
 
   const handleClick = (e: any) => {
     const id = e.target.id.replace(PREVIEW_ID_PREFIX, '');
@@ -75,12 +27,12 @@ export const Content = () => {
         const currentOptions = animationOptions.options?.[animationOptions.currentElementId] || {};
         Object.entries(currentOptions)
           .filter(item => item[0] !== 'repeat' && item[0] !== 'duration' && item[0] !== 'delay' && item[0] !== 'speed')
-          .forEach(([key, value]) => {
+          .forEach(([key]) => {
             element.style[key as Option] = getDefaultValue(key);
           });
 
         secondElement.remove();
-        setAnimationOptions((prev: any) => ({ ...prev, currentElementId: null }));
+        setAnimationOptions((prev: IAnimationOptions) => ({ ...prev, currentElementId: null }));
       } else if (!id.includes(PREVIEW_ID_PREFIX)) {
         secondElement = document.createElement('div');
         secondElement.id = `${PREVIEW_ID_PREFIX}${e.target.id}`;
@@ -95,10 +47,23 @@ export const Content = () => {
         if (element.parentNode) element.parentNode.insertBefore(secondElement, element);
         secondElement.appendChild(element);
         element.style.position = 'absolute';
-        setAnimationOptions((prev: any) => ({ ...prev, currentElementId: e.target.id }));
+        setAnimationOptions((prev: IAnimationOptions) => ({ ...prev, currentElementId: e.target.id }));
       }
     }
   };
+
+  useEffect(() => {
+    const element = document.getElementById(animationOptions.currentElementId);
+
+    if (element) {
+      const currentOptions = animationOptions.options?.[animationOptions.currentElementId] || {};
+      Object.entries(currentOptions)
+        .filter(item => item[0] !== 'repeat' && item[0] !== 'duration' && item[0] !== 'delay' && item[0] !== 'speed')
+        .forEach(([key, value]) => {
+          element.style[key as Option] = getValue(key, (value || 0) as number);
+        });
+    }
+  }, [Object.values(animationOptions.options || {})]);
 
   return (
     <ContentWrapper onClick={handleClick}>

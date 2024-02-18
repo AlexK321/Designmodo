@@ -1,7 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
 
-import { device } from './constants';
-
 export interface ITheme {
   colors: {
     bg: string;
@@ -41,13 +39,6 @@ export const GlobalStyles = createGlobalStyle`
     font-family: "Inter", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
-
-  div#root {
-    @media ${device.tablet} {
-      max-width: 768px;
-      margin: 0 auto;
-    }
   }
 
   h1 {
