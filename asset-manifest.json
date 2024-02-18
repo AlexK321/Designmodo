@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/Designmodo/static/js/main.d587af16.js",
+    "main.js": "/Designmodo/static/js/main.f1b8201d.js",
     "index.html": "/Designmodo/index.html",
-    "main.d587af16.js.map": "/Designmodo/static/js/main.d587af16.js.map"
+    "main.f1b8201d.js.map": "/Designmodo/static/js/main.f1b8201d.js.map"
   },
   "entrypoints": [
-    "static/js/main.d587af16.js"
+    "static/js/main.f1b8201d.js"
   ]
 }
