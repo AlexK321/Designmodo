@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Checkbox, MenuItem, Select } from '@mui/material';
+import { useState } from 'react';
+import { Checkbox, FormControlLabel, MenuItem, Radio, RadioGroup, Select, Switch } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
 import { Box, IOSSlider, SliderWrapper } from './Option.styles';
 
-export const Option = ({ label, name, defaultValue, onChange, type = 'slider', ...props }: any) => {
+export const Option = ({ label, name, defaultValue, onChange, value, type = 'slider', ...props }: any) => {
   return (
     <Box>
       <Typography
@@ -18,16 +19,13 @@ export const Option = ({ label, name, defaultValue, onChange, type = 'slider', .
       </Typography>
       <SliderWrapper>
         {type === 'slider' && (
-          <IOSSlider defaultValue={defaultValue} valueLabelDisplay="on" onChange={onChange} name={name} {...props} />
-        )}
-        {type === 'checkbox' && (
-          <Checkbox
-            defaultChecked={defaultValue}
+          <IOSSlider
+            defaultValue={defaultValue}
+            valueLabelDisplay="on"
             onChange={onChange}
             name={name}
-            style={{ margin: '-6px -12px' }}
+            value={value}
             {...props}
-            checked={props.value}
           />
         )}
         {type === 'select' && (
@@ -36,6 +34,7 @@ export const Option = ({ label, name, defaultValue, onChange, type = 'slider', .
             defaultValue={defaultValue}
             name={name}
             onChange={onChange}
+            value={value}
             {...props}
           >
             <MenuItem value="bounce.out">bounce.out</MenuItem>

@@ -1,21 +1,19 @@
-import { useContext, useEffect, useRef } from 'react';
-import gsap from 'gsap';
+import { useContext, useEffect } from 'react';
+import { Box, Switch, Typography } from '@mui/material';
 
 import { Context } from '../../App';
-import { PREVIEW_ID_PREFIX } from '../../constants';
 import { Button } from '../../core/Button/Button';
 import { Option } from '../../core/Option/Option';
-import { getDefaultValue } from '../Content';
+import { useStartAnimation } from '../../utils/startAnimation';
 
 import { DEFAULT_SLIDER_OPTIONS } from './Tools.constants';
 
-import { ButtonContainer, SavingContainer, ToolsWrapper } from './Tools.styles';
-
-type TOption = 'top' | 'left' | 'opacity' | 'transform' | 'filter';
+import { SliderWrapper } from '../../core/Option/Option.styles';
+import { ButtonContainer, ToolsWrapper } from './Tools.styles';
 
 export const Tools = () => {
-  const elementRef = useRef<any>();
   const [animationOptions, setAnimationOptions] = useContext<any>(Context);
+  const { startAnimation } = useStartAnimation();
   useEffect(() => {
     setAnimationOptions(
       JSON.parse(localStorage.getItem('animationOptions') || '{"currentElementId": null, "options": {}}'),
@@ -29,26 +27,26 @@ export const Tools = () => {
   const currentOptions = animationOptions.options?.[animationOptions.currentElementId] || {};
 
   let preparingOptions = DEFAULT_SLIDER_OPTIONS;
+
   useEffect(() => {
     preparingOptions = DEFAULT_SLIDER_OPTIONS.map(item => ({
       ...item,
       value: currentOptions[item.name] || item.defaultValue,
     }));
+    console.log(currentOptions, preparingOptions);
   }, [animationOptions.currentElementId]);
 
+  console.log(currentOptions);
+
   const handleChange = (e: any) => {
-    if (!animationOptions.currentElementId) {
-      alert('Please select element');
-      return;
-    }
-    console.log(234234234, e.target.name, e.target.checked, e.target.value);
+    console.log(e.target.name, e.target.value);
     setAnimationOptions((prev: any) => ({
       ...prev,
       options: {
         ...prev.options,
         [prev.currentElementId]: {
           ...prev.options[prev.currentElementId],
-          [e.target.name]: e.target.name === 'repeat' ? e.target.checked : e.target.value,
+          [e.target.name]: e.target.value,
         },
       },
     }));
@@ -60,56 +58,6 @@ export const Tools = () => {
     window.location.reload();
   };
 
-  const startAnimation = (e: any) => {
-    const elementId = e.target.id.replace('start-', '');
-    const element = document.getElementById(elementId);
-    elementRef.current = element;
-
-    console.log(element);
-
-    if (element) {
-      const secondElement = document.getElementById(`${PREVIEW_ID_PREFIX}${elementId}`);
-
-      if (animationOptions.currentElementId === elementId && secondElement) {
-        if (secondElement.parentNode) secondElement.parentNode.insertBefore(element, secondElement);
-        element.style.position = 'relative';
-
-        const currentOptions = animationOptions.options?.[animationOptions.currentElementId] || {};
-        Object.entries(currentOptions)
-          .filter(item => item[0] !== 'repeat' && item[0] !== 'duration' && item[0] !== 'delay' && item[0] !== 'speed')
-          .forEach(([key]) => {
-            element.style[key as TOption] = getDefaultValue(key);
-          });
-
-        secondElement.remove();
-        setAnimationOptions((prev: any) => ({ ...prev, currentElementId: null }));
-      }
-    }
-
-    const options = animationOptions.options?.[elementId] || {};
-    gsap.killTweensOf(elementRef.current);
-    console.log(element);
-    gsap.to(element, {
-      x: options.left,
-      y: options.bottom * -1,
-      opacity: options.opacity / 100,
-      filter: `blur(${options.filter}px)`,
-      repeat: options.repeat ? 1000 : 0,
-      duration: 10 / (options.speed || 10),
-      // delay: 10 / (options.delay || 10),
-      ease: options.easing || 'none',
-      scale: options.transform,
-    });
-  };
-
-  const startAllAnimations = () => {
-    Object.entries(animationOptions.options).forEach(([key]) => {
-      if (key !== animationOptions.currentElementId) {
-        startAnimation({ target: { id: key } });
-      }
-    });
-  };
-
   return (
     <ToolsWrapper>
       <p style={{ textAlign: 'center' }}>
@@ -119,19 +67,28 @@ export const Tools = () => {
           <span style={{ color: '#ba6645' }}>Please choose element</span>
         )}
       </p>
-      {preparingOptions.map(slider => (
-        <Option key={slider.name} onChange={handleChange} {...slider} />
+      {preparingOptions.map(item => (
+        <Option
+          key={item.name}
+          value={currentOptions[item.name] || item.defaultValue}
+          onChange={handleChange}
+          {...item}
+          disabled={!animationOptions.currentElementId}
+        />
       ))}
       <ButtonContainer>
         <Button onClick={handleReset} variant="small" fullwidth="true">
           Reset all
         </Button>
-        Start animations:
-        <Button onClick={startAllAnimations} variant="small" key={'S_A'} fullwidth="true">
-          Start all
-        </Button>
+        Start animation:
         {Object.entries(animationOptions.options).map(item => (
-          <Button onClick={startAnimation} variant="small" key={item[0]} id={`start-${item[0]}`} fullwidth="true">
+          <Button
+            onClick={(e: any) => startAnimation(e.target.id.replace('start-', ''))}
+            variant="small"
+            key={item[0]}
+            id={`start-${item[0]}`}
+            fullwidth="true"
+          >
             {item[0]}
           </Button>
         ))}

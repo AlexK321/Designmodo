@@ -6,7 +6,8 @@ import { Header, LayoutBox, Main } from './Layouts.styles';
 
 export const Layout = ({ children }: { children: ReactElement }) => {
   const onPreviewClick = () => {
-    console.log(1);
+    const baseUrl = window.location.origin;
+    window.open(`${baseUrl}/preview`, '_blank');
   };
 
   return (

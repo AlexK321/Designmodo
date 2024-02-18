@@ -5,6 +5,7 @@ import { Layout } from '../components/Layout';
 import { appTheme } from '../theme';
 
 import { MainPage } from './MainPage';
+import { PreviewPage } from './PreviewPage';
 
 export const AppRoutes = () => {
   const renderLayout = () => {
@@ -21,6 +22,7 @@ export const AppRoutes = () => {
         <Routes>
           <Route element={renderLayout()}>
             <Route path="/" element={<MainPage />} />
+            <Route path="/preview" element={<PreviewPage />} />
           </Route>
           <Route path="*" element={<> Error page</>} />
         </Routes>

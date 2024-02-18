@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { device } from '../../constants';
-
 export const ToolsWrapper = styled.div`
   width: 240px;
   background: white;
@@ -14,10 +12,4 @@ export const ButtonContainer = styled.div`
   gap: 10px;
   align-items: center;
   margin-top: 10px;
-`;
-
-export const SavingContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
 `;

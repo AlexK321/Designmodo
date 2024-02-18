@@ -53,14 +53,17 @@ export const DEFAULT_SLIDER_OPTIONS = [
     step: 1,
   },
   {
+    name: 'repeat',
+    label: 'Repeat',
+    defaultValue: 1,
+    min: 1,
+    max: 30,
+    step: 1,
+  },
+  {
     name: 'easing',
     label: 'Easing',
     type: 'select',
     defaultValue: 'none',
-  },
-  {
-    name: 'repeat',
-    label: 'Repeat',
-    type: 'checkbox',
   },
 ];
